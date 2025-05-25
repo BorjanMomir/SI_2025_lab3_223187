@@ -38,6 +38,7 @@ jobs:
     needs: docker-publish
     environment:
       name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout code
@@ -46,15 +47,11 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
-      - name: Archive static site
-        run: |
-          mkdir -p output
-          cp index.html output/index.html
-
-      - name: Upload artifact
+      - name: Upload index.html to artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: ./output
+          path: .
 
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v2
