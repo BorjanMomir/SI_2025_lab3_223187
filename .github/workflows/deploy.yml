@@ -27,4 +27,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/si_lab3:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/si-2025-lab3:master-latest
