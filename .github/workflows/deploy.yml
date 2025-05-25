@@ -1,4 +1,4 @@
-name: Manual deploy to GitHub Pages via gh-pages
+name: Deploy to GitHub Pages (manual push to gh-pages)
 
 on:
   push:
@@ -13,23 +13,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      - name: Install gh-pages CLI
-        run: npm install -g gh-pages
-
-      - name: Copy files to temporary folder
+      - name: Copy index.html to temp folder
         run: |
-          mkdir temp
-          cp index.html temp/index.html
+          mkdir site
+          cp index.html site/index.html
 
-      - name: Publish to gh-pages branch
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push to gh-pages branch
         run: |
-          git config user.email "actions@github.com"
+          cd site
+          git init
           git config user.name "GitHub Actions"
-          npx gh-pages -d temp -b gh-pages -r https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
+          git config user.email "actions@github.com"
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git checkout -b gh-pages
+          git add .
+          git commit -m "Deploy GitHub Pages from master"
+          git push --force origin gh-pages
