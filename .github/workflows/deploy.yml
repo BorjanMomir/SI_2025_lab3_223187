@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages (manual push to gh-pages)
+name: Manual deploy to GitHub Pages via gh-pages
 
 on:
   push:
@@ -30,4 +30,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh-pages -d temp -b gh-pages -r https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          npx gh-pages -d temp -b gh-pages -r https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
